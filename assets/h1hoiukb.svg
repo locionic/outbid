@@ -1,0 +1,24 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    "Clean & Cool" Lunar Eclipse.
+    Uses ultra-clean software-brand colors (Sky Blue -> Indigo -> Midnight Violet).
+    Zero muddy/dark reds.
+  -->
+
+  <!-- The bright illuminated sector of the moon (Vivid Sky Blue) -->
+  <circle cx="128" cy="128" r="96" fill="#38BDF8" />
+  
+  <clipPath id="moon-bounds">
+    <circle cx="128" cy="128" r="96" />
+  </clipPath>
+  
+  <!-- Flat Shadow Band 1: Indigo (Smooth cool transition) -->
+  <circle cx="96" cy="160" r="130" fill="#4F46E5" clip-path="url(#moon-bounds)" />
+  
+  <!-- Flat Shadow Band 2: Midnight Violet (Deep Totality, rich and clean) -->
+  <circle cx="64" cy="192" r="130" fill="#1E1B4B" clip-path="url(#moon-bounds)" />
+
+  <!-- A single pristine white tech-star/sparkle, contrasting beautifully with the dark indigo -->
+  <path d="M 64 160 Q 72 160 72 152 Q 72 160 80 160 Q 72 160 72 168 Q 72 160 64 160 Z" fill="#FFFFFF" />
+  <circle cx="86" cy="176" r="2" fill="#FFFFFF" opacity="0.5" />
+</svg>

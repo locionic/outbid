@@ -1,0 +1,170 @@
+[
+ {
+  "slug": "ai-agents-infrastructure",
+  "name": "AI Agents & Infrastructure",
+  "shortName": "Agents",
+  "sortOrder": 1
+ },
+ {
+  "slug": "seo-ai-visibility",
+  "name": "SEO & AI Visibility",
+  "shortName": "SEO",
+  "sortOrder": 2
+ },
+ {
+  "slug": "marketing-advertising",
+  "name": "Marketing & Advertising",
+  "shortName": "Marketing",
+  "sortOrder": 3
+ },
+ {
+  "slug": "crypto-web3-investing",
+  "name": "Crypto, Web3 & Investing",
+  "shortName": "Crypto",
+  "sortOrder": 4
+ },
+ {
+  "slug": "developer-tools",
+  "name": "Developer Tools",
+  "shortName": "Developer",
+  "sortOrder": 5
+ },
+ {
+  "slug": "business-finance-legal",
+  "name": "Business, Finance & Legal",
+  "shortName": "Business",
+  "sortOrder": 6
+ },
+ {
+  "slug": "security-privacy-compliance",
+  "name": "Security, Privacy & Compliance",
+  "shortName": "Security",
+  "sortOrder": 7
+ },
+ {
+  "slug": "health-fitness-wellness",
+  "name": "Health, Fitness & Wellness",
+  "shortName": "Health",
+  "sortOrder": 8
+ },
+ {
+  "slug": "social-media-creator-tools",
+  "name": "Social Media & Creator Tools",
+  "shortName": "Social",
+  "sortOrder": 9
+ },
+ {
+  "slug": "leaderboards-attention",
+  "name": "Leaderboards & Attention Markets",
+  "shortName": "Leaderboards",
+  "sortOrder": 10
+ },
+ {
+  "slug": "hiring-jobs-careers",
+  "name": "Hiring, Jobs & Careers",
+  "shortName": "Hiring",
+  "sortOrder": 11
+ },
+ {
+  "slug": "education-learning",
+  "name": "Education & Learning",
+  "shortName": "Education",
+  "sortOrder": 12
+ },
+ {
+  "slug": "agencies-studios-services",
+  "name": "Agencies, Studios & Services",
+  "shortName": "Agencies",
+  "sortOrder": 13
+ },
+ {
+  "slug": "ecommerce-retail",
+  "name": "Ecommerce & Retail",
+  "shortName": "Ecommerce",
+  "sortOrder": 14
+ },
+ {
+  "slug": "domains-web-assets",
+  "name": "Domains & Web Assets",
+  "shortName": "Domains",
+  "sortOrder": 15
+ },
+ {
+  "slug": "games-entertainment",
+  "name": "Games & Entertainment",
+  "shortName": "Games",
+  "sortOrder": 16
+ },
+ {
+  "slug": "people-profiles",
+  "name": "People & Profiles",
+  "shortName": "People",
+  "sortOrder": 17
+ },
+ {
+  "slug": "productivity-personal-tools",
+  "name": "Productivity & Personal Tools",
+  "shortName": "Productivity",
+  "sortOrder": 18
+ },
+ {
+  "slug": "design-creative",
+  "name": "Design & Creative",
+  "shortName": "Design",
+  "sortOrder": 19
+ },
+ {
+  "slug": "writing-content",
+  "name": "Writing & Content",
+  "shortName": "Writing",
+  "sortOrder": 20
+ },
+ {
+  "slug": "directories-launch-discovery",
+  "name": "Directories, Launch & Discovery",
+  "shortName": "Directories",
+  "sortOrder": 21
+ },
+ {
+  "slug": "ai-media-generation",
+  "name": "AI Media Generation",
+  "shortName": "AI Media",
+  "sortOrder": 22
+ },
+ {
+  "slug": "audio-voice-podcasting",
+  "name": "Audio, Voice & Podcasting",
+  "shortName": "Audio",
+  "sortOrder": 23
+ },
+ {
+  "slug": "sales-lead-generation",
+  "name": "Sales & Lead Generation",
+  "shortName": "Sales",
+  "sortOrder": 24
+ },
+ {
+  "slug": "travel-local-lifestyle",
+  "name": "Travel, Local & Lifestyle",
+  "shortName": "Travel",
+  "sortOrder": 25
+ },
+ {
+  "slug": "real-estate-property",
+  "name": "Real Estate & Property",
+  "shortName": "Real Estate",
+  "sortOrder": 26
+ },
+ {
+  "slug": "media-news",
+  "name": "Media & News",
+  "shortName": "News",
+  "sortOrder": 27
+ },
+ {
+  "slug": "other",
+  "name": "Other",
+  "shortName": "Other",
+  "sortOrder": 28
+ }
+]

@@ -1,0 +1,42 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1024" height="1024" fill="url(#paint0_linear_403_253)"/>
+<rect x="256" y="252" width="88" height="88" rx="10" fill="white"/>
+<rect x="360" y="252" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="468" y="252" width="88" height="88" rx="10" fill="white"/>
+<rect x="572" y="252" width="88" height="88" rx="10" fill="white"/>
+<rect x="676" y="252" width="88" height="88" rx="10" fill="white"/>
+<rect opacity="0.3" x="784" y="252" width="84" height="88" rx="10" fill="white"/>
+<rect x="152" y="252" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="256" y="372" width="88" height="84" rx="10" fill="white"/>
+<rect x="360" y="372" width="88" height="84" rx="10" fill="white"/>
+<rect x="468" y="372" width="88" height="84" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="572" y="372" width="88" height="84" rx="10" fill="white"/>
+<rect x="676" y="372" width="88" height="84" rx="10" fill="white"/>
+<rect x="784" y="372" width="84" height="84" rx="10" fill="white"/>
+<rect x="152" y="372" width="88" height="84" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="256" y="488" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="360" y="488" width="88" height="88" rx="10" fill="white"/>
+<rect x="468" y="488" width="88" height="88" rx="10" fill="white"/>
+<rect x="572" y="488" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="676" y="488" width="88" height="88" rx="10" fill="white"/>
+<rect x="784" y="488" width="84" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="152" y="488" width="88" height="88" rx="10" fill="white"/>
+<rect x="256" y="608" width="88" height="84" rx="10" fill="white"/>
+<rect x="360" y="608" width="88" height="84" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="468" y="608" width="88" height="84" rx="10" fill="white"/>
+<rect x="572" y="608" width="88" height="84" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="676" y="608" width="88" height="84" rx="10" fill="white"/>
+<rect x="152" y="608" width="88" height="84" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="256" y="724" width="88" height="88" rx="10" fill="white"/>
+<rect x="360" y="724" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="468" y="724" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="572" y="724" width="88" height="88" rx="10" fill="white"/>
+<rect x="676" y="724" width="88" height="88" rx="10" fill="white" fill-opacity="0.3"/>
+<rect x="152" y="724" width="88" height="88" rx="10" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_403_253" x1="512" y1="0" x2="512" y2="1024" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="1"/>
+</linearGradient>
+</defs>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#EC4899"/>
+      <stop offset="50%"  stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+  <!-- Gradient rounded-square background (matches app icon spec: radius ≈ 25%) -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  <!-- White rocket mark (from branding.jsx RocketMark, scaled to 75% and centred) -->
+  <g transform="translate(8,6) scale(0.75)"
+     stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Body -->
+    <path d="M32 6 C38 12,42 20,42 28 L42 42 C42 46,39 49,36 49 L28 49 C25 49,22 46,22 42 L22 28 C22 20,26 12,32 6 Z"/>
+    <!-- Window -->
+    <circle cx="32" cy="26" r="4"/>
+    <!-- Separation line -->
+    <path d="M22 38 L42 38"/>
+    <!-- Left fin -->
+    <path d="M22 34 L14 40 L14 50 L22 46 Z"/>
+    <!-- Right fin -->
+    <path d="M42 34 L50 40 L50 50 L42 46 Z"/>
+    <!-- Flame -->
+    <path d="M28 49 C28 54,30 57,32 60 C34 57,36 54,36 49"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The Spaceships mark, traced from the brand art: two ships interlocked
+       into an S, their separations baked into the geometry. On the game's
+       dark ground so the tab icon reads on light and dark chrome alike. -->
+  <rect width="32" height="32" rx="5" fill="#060608"/>
+  <g transform="translate(16 16) scale(0.07606) translate(-230.5 -202)">
+    <path d="M335,60 L306,71 L269,85 L224,102 L195,113 L161,126 L159,128 L171,134 L205,149 L239,164 L248,168 L252,168 L263,154 L274,140 L287,124 L298,110 L309,96 L322,80 L332,67 L336,62 Z M145,132 L105,147 L76,158 L53,167 L57,170 L91,185 L125,200 L159,215 L193,230 L220,242 L224,243 L222,238 L210,222 L197,203 L187,190 L176,174 L165,159 L153,142 L148,135 L147,132 Z M172,148 L179,159 L185,167 L198,185 L208,199 L220,216 L233,234 L239,243 L238,248 L229,259 L218,273 L206,288 L195,302 L182,318 L172,331 L163,342 L163,344 L168,343 L211,327 L253,311 L306,291 L359,271 L396,257 L408,252 L404,249 L370,234 L336,219 L302,204 L268,189 L229,172 L200,159 L175,148 Z" fill="#ffffff"/>
+  </g>
+</svg>

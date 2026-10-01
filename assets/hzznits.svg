@@ -1,0 +1,18 @@
+<!--
+  ZDROJ PRAVDY pro značku Rentria. Zelená dlaždice s klíčovou dírkou.
+
+  Odsud se odvozuje všechno ostatní:
+    - components/app/rentrio-logo.tsx  překresluje tytéž tvary v Reactu
+    - public/rentrio-mark.png          generuje `npm run build:brand`
+    - public/favicon.ico               rastr pro prohlížeče
+
+  Když se tvar změní tady, musí se změnit i v komponentě a znovu vygenerovat
+  PNG. Že to sedí, hlídá lib/brand-mark.test.ts.
+
+  Brand je ZELENÝ (#2F7A54). Terakota je jen akcent a do značky nepatří.
+-->
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="9" fill="#2F7A54"/>
+  <circle cx="16" cy="13" r="4.8" fill="#F4F2EC"/>
+  <path d="M13.8 16 L11.7 25 H20.3 L18.2 16 Z" fill="#F4F2EC"/>
+</svg>

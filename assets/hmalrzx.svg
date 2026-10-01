@@ -1,0 +1,20 @@
+<!-- Favicon: the arrow mark lifted straight from images/siteaim-logo.svg.
+     Square 64x64 viewBox (the previous 44x40 one was not square, so browsers
+     letterboxed it). The mark is 40x36, scaled 1.1 and centred with even
+     padding. Sat on the brand purple so the orange reads on both light and
+     dark browser tab strips - the bare mark disappeared against warm tabs. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#1c1740"/>
+  <g transform="translate(10.1,12.2) scale(1.1)">
+    <path d="M17.8657 17.545C18.1123 17.9728 18.1123 18.4999 17.8657 18.9277L15.2191 23.5191C14.9725 23.9469 14.5167 24.2104 14.0236 24.2104H4.87583C4.38264 24.2104 3.92691 23.9469 3.68032 23.5191L0.184947 17.4553C-0.0616491 17.0275 -0.061649 16.5004 0.184947 16.0726L9.05119 0.691334C9.29778 0.263536 9.75351 0 10.2467 0L26.3852 0C27.4478 0 28.112 1.15222 27.5807 2.074L21.0538 13.397C20.5224 14.3188 19.1941 14.3188 18.6627 13.397L12.9895 3.55494C12.6083 2.89362 11.764 2.66704 11.1037 3.04885C10.4435 3.43066 10.2172 4.27629 10.5984 4.93761L17.8657 17.545Z" fill="url(#g)"/>
+    <path d="M24.7809 12.4809C25.0275 12.0531 25.4833 11.7896 25.9764 11.7896L35.1242 11.7896C35.6174 11.7896 36.0731 12.0531 36.3197 12.4809L39.8151 18.5447C40.0616 18.9725 40.0616 19.4996 39.8151 19.9274L30.9488 35.3087C30.7022 35.7365 30.2465 36 29.7533 36L13.6148 36C12.5522 36 11.888 34.8478 12.4193 33.926L18.9462 22.603C19.4776 21.6812 20.8059 21.6812 21.3373 22.603L27.0105 32.4451C27.3917 33.1064 28.236 33.333 28.8963 32.9511C29.5565 32.5693 29.7828 31.7237 29.4016 31.0624L22.1343 18.455C21.8877 18.0272 21.8877 17.5001 22.1343 17.0723L24.7809 12.4809Z" fill="url(#g)"/>
+  </g>
+  <defs>
+    <radialGradient id="g" cx="0" cy="0" r="1"
+      gradientTransform="matrix(-14.7 48.5357 -15.1 -47.25 38.8 0)"
+      gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFBB9A"/>
+      <stop offset="1" stop-color="#F35B05"/>
+    </radialGradient>
+  </defs>
+</svg>

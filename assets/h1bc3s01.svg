@@ -1,0 +1,17 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="40" fill="#F07828"/>
+  <!-- ear tufts -->
+  <circle cx="30" cy="86" r="20" fill="#F79552"/>
+  <circle cx="150" cy="86" r="20" fill="#F79552"/>
+  <!-- brow / face mask -->
+  <path d="M32 84c0-26 26-42 58-42s58 16 58 42c0 30-26 52-58 52S32 114 32 84z" fill="#F79552"/>
+  <!-- eyes -->
+  <circle cx="63" cy="82" r="22" fill="#FFFFFF"/>
+  <circle cx="117" cy="82" r="22" fill="#FFFFFF"/>
+  <circle cx="65" cy="84" r="14" fill="#2F2A33"/>
+  <circle cx="115" cy="84" r="14" fill="#2F2A33"/>
+  <!-- muzzle -->
+  <ellipse cx="90" cy="126" rx="34" ry="28" fill="#FAC79B"/>
+  <path d="M78 118c2-5 6-8 12-8s10 3 12 8" stroke="#F07828" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M74 132c5 8 11 12 16 12s11-4 16-12" stroke="#F07828" stroke-width="6" stroke-linecap="round" fill="none"/>
+</svg>

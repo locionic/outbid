@@ -1,0 +1,349 @@
+/* Clean neutral design — no dependency on the mirror's Tailwind classes or fonts. */
+
+:root {
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --text: #1b1b1a;
+  --muted: #6a6a66;
+  --line: #e4e3df;
+  --accent: #1a56db;
+  --accent-soft: #eef2fd;
+  --chip: #f2f2ef;
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131313;
+    --surface: #1c1c1c;
+    --text: #ececea;
+    --muted: #9a9a94;
+    --line: #2e2e2e;
+    --accent: #7ea2ff;
+    --accent-soft: #1e2637;
+    --chip: #262626;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  padding: 36px 0 26px;
+}
+
+h1 { margin: 0; font-size: 25px; letter-spacing: -0.02em; font-weight: 650; }
+
+.sub {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.lede { margin: 8px 0 0; max-width: 60ch; color: var(--muted); }
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 22px 0 0;
+}
+
+.stats div { margin: 0; }
+
+.stats dt {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.stats dd {
+  margin: 2px 0 0;
+  font-size: 19px;
+  font-weight: 600;
+  /* Proportional, not tabular: these four sit in a row, and tabular digits
+     look loose at display sizes. The leaderboard's .num cells keep tabular —
+     those genuinely align vertically. */
+}
+
+/* ---------- controls ---------- */
+
+main { padding-top: 24px; }
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: end;
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field:first-child { flex: 1 1 260px; }
+
+label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+input, select, button {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 11px;
+  min-height: 38px;
+}
+
+button { cursor: pointer; }
+button:hover { border-color: var(--accent); color: var(--accent); }
+
+input::placeholder { color: var(--muted); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.result-count {
+  margin: 20px 0 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- table ---------- */
+
+.table-scroll { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+th, td {
+  text-align: left;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  font-weight: 600;
+  background: var(--chip);
+  white-space: nowrap;
+  /* With 1,273 rows the column meanings would otherwise scroll off in one screen. */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--accent-soft); }
+
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.rank { color: var(--muted); width: 1%; }
+
+.listing { display: flex; align-items: center; gap: 12px; min-width: 260px; }
+
+.avatar {
+  width: 32px; height: 32px;
+  flex: 0 0 32px;
+  border-radius: 7px;
+  object-fit: contain;
+  background: var(--chip);
+  border: 1px solid var(--line);
+}
+
+/* Monogram fallback, used when a listing has no image or it fails to load. */
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.listing-name {
+  display: block;
+  font-weight: 550;
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 34ch;
+}
+
+.listing-name:hover { color: var(--accent); text-decoration: underline; }
+
+.listing-desc {
+  display: block;
+  color: var(--muted);
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 46ch;
+}
+
+.x-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  font-size: 10.5px;
+  color: var(--muted);
+  vertical-align: 1px;
+}
+
+.cat {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.date { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+
+.paid { font-weight: 600; }
+
+.empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---------- category spend panel ---------- */
+
+.panel {
+  margin: 0 0 22px;
+  padding: 12px 16px 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.panel > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  list-style-position: outside;
+}
+
+.panel-note {
+  margin-left: 8px;
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.cats {
+  margin-top: 12px;
+  /* The .panel card already provides the surface and border. */
+  border: 0;
+  border-radius: 0;
+  background: none;
+  /* Fixed layout is load-bearing, not cosmetic: under the default `auto` layout the
+     bar column has no definite width, and a percentage-width child of an
+     indefinite containing block resolves to 0 — every bar would vanish. */
+  table-layout: fixed;
+}
+
+.cats th, .cats td {
+  padding: 5px 8px;
+  background: none;
+}
+
+.cats tbody tr:last-child td { border-bottom: 0; }
+.cats tbody tr:hover { background: none; }
+
+.cat-name {
+  width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The bar column takes whatever the name and value columns leave; the bar itself
+   is a fixed 10px mark, well under the 24px cap, so the row keeps its air. */
+.cat-bar-col { width: auto; }
+
+.cats th.num { width: 96px; }
+
+.cat-bar {
+  display: block;
+  height: 10px;
+  /* Square at the baseline, 4px rounded at the data end. */
+  border-radius: 0 4px 4px 0;
+  /* One hue for every bar — the series is magnitude, not identity, so there is
+     no categorical palette to assign and no legend to draw. */
+  background: var(--accent);
+}
+
+/* ---------- footer ---------- */
+
+.footnote {
+  margin-top: 40px;
+  padding: 22px 20px 48px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 1100px;
+}
+
+.footnote p { margin: 0 0 8px; max-width: 75ch; }
+.footnote a { color: var(--accent); }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+}
+
+/* Category and date columns are the first to go on narrow screens. */
+@media (max-width: 860px) {
+  .col-cat, .col-date { display: none; }
+  .listing-desc { max-width: 28ch; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  tbody tr { transition: background-color 90ms ease; }
+}

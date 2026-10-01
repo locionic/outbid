@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">outbids mark</title>
+  <desc id="desc">Three ascending coral and graphite bars forming the outbids mark.</desc>
+  <rect width="96" height="96" rx="24" fill="#fcfbf8"/>
+  <path d="M24 28h29a7 7 0 0 1 7 7v6H31v27a7 7 0 0 1-7-7V28Z" fill="#ed8d7a"/>
+  <path d="M24 43h48a7 7 0 0 1 7 7v6H31v12a7 7 0 0 1-7 7V43Z" fill="#242321"/>
+  <path d="M24 58h33a7 7 0 0 1 7 7v6H31v4a7 7 0 0 1-7 7V58Z" fill="#242321" opacity=".92"/>
+</svg>

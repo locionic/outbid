@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- TinyShops mark. 5-dot T, no ghost corners. Geometry: 18% pad, ~8.5% gaps. -->
+  <style>
+    .tile { fill: #15161A; }
+    .stem { fill: #FFFFFF; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #F2F0EB; }
+      .stem { fill: #15161A; }
+    }
+  </style>
+  <rect class="tile" width="64" height="64" rx="14" />
+  <circle cx="17.186" cy="17.186" r="5.666" fill="#FF8A3D" />
+  <circle cx="32" cy="17.186" r="5.666" fill="#E5484D" />
+  <circle cx="46.814" cy="17.186" r="5.666" fill="#3390EC" />
+  <circle cx="32" cy="32" r="5.666" class="stem" />
+  <circle cx="32" cy="46.814" r="5.666" class="stem" />
+</svg>

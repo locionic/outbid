@@ -1,0 +1,23 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ocean" cx="36%" cy="30%" r="82%">
+      <stop offset="0%" stop-color="#8ECBF3"/>
+      <stop offset="55%" stop-color="#3E9BE0"/>
+      <stop offset="100%" stop-color="#2867A8"/>
+    </radialGradient>
+    <clipPath id="globe"><circle cx="50" cy="50" r="46"/></clipPath>
+  </defs>
+
+  <!-- planet -->
+  <circle cx="50" cy="50" r="46" fill="url(#ocean)"/>
+
+  <!-- continents -->
+  <g clip-path="url(#globe)" fill="#5CC07C">
+    <path d="M22 34 q10 -8 18 -2 q4 6 -1 11 q7 4 3 12 q-6 9 -15 5 q-6 -3 -6 -10 q-6 -5 -3 -12 q1 -3 4 -4Z"/>
+    <path d="M58 24 q12 -3 16 6 q-2 7 -8 9 q3 7 -4 11 q-9 3 -12 -5 q-2 -7 3 -11 q-3 -8 5 -10Z"/>
+    <path d="M50 66 q9 -2 11 5 q-1 6 -8 7 q-8 1 -9 -6 q-1 -5 6 -6Z"/>
+  </g>
+
+  <!-- glossy highlight -->
+  <ellipse cx="36" cy="32" rx="14" ry="9" fill="#ffffff" opacity="0.18" transform="rotate(-25 36 32)"/>
+</svg>

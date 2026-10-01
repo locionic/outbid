@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OutBidMacApp">
+  <rect width="64" height="64" rx="14" fill="#FAF7F2"/>
+  <g>
+    <rect x="32" y="11" width="24" height="11" rx="5.5" fill="#FC5A21"/>
+    <rect x="17" y="27" width="36" height="11" rx="5.5" fill="#212121"/>
+    <rect x="6"  y="43" width="44" height="11" rx="5.5" fill="#212121"/>
+  </g>
+</svg>

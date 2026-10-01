@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.90 493.90" width="493.90" height="493.90" role="img" aria-label="ideavibes">
+  <title>ideavibes</title>
+  <defs>
+    <linearGradient id="sail" gradientUnits="userSpaceOnUse" x1="415.91" y1="269.93" x2="110.47" y2="380.47">
+      <stop offset="0.00" stop-color="#015cfd"/>
+      <stop offset="0.12" stop-color="#0059fd"/>
+      <stop offset="0.25" stop-color="#0051f7"/>
+      <stop offset="0.38" stop-color="#0046e2"/>
+      <stop offset="0.50" stop-color="#003dd0"/>
+      <stop offset="0.62" stop-color="#0034be"/>
+      <stop offset="0.75" stop-color="#002aaa"/>
+      <stop offset="0.88" stop-color="#002498"/>
+      <stop offset="1.00" stop-color="#001f8c"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#sail)" d="M94.89 449.45C220.54 348.53 328.99 218.32 331.89 44.45C392.42 123.98 424.61 322.24 373.89 445.45C300.53 429.44 179.44 417.71 94.89 449.45Z"/>
+</svg>

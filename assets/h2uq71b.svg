@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160.51" height="160.51" viewBox="-80.26 -80.26 160.51 160.51" fill="none" role="img" aria-label="Unify mark">
+  <polygon points="60.97,-35.2 0,0 0,70.4 60.97,35.2" fill="#c15b56" stroke="#241a2b" stroke-width="2.4" stroke-linejoin="round"></polygon>
+  <polygon points="-60.97,-35.2 0,0 0,70.4 -60.97,35.2" fill="#2f9d97" stroke="#241a2b" stroke-width="2.4" stroke-linejoin="round"></polygon>
+  <polygon points="0,-70.4 60.97,-35.2 0,0 -60.97,-35.2" fill="#d7aa5d" stroke="#241a2b" stroke-width="2.4" stroke-linejoin="round"></polygon>
+</svg>

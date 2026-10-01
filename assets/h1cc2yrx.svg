@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 26" fill="none">
+  <defs>
+    <clipPath id="s">
+      <path d="M12 0.5L22.5 5.2V14C22.5 19.8 12 25 12 25C12 25 1.5 19.8 1.5 14V5.2L12 0.5Z"/>
+    </clipPath>
+  </defs>
+  <!-- Facet 1: top-right (brightest) -->
+  <polygon points="12,0.5 22.5,5.2 22.5,14 14,19 9,11 15,4" fill="white" clip-path="url(#s)"/>
+  <!-- Facet 2: left side (mid tone) -->
+  <polygon points="12,0.5 15,4 9,11 4,16 1.5,14 1.5,5.2" fill="white" fill-opacity="0.62" clip-path="url(#s)"/>
+  <!-- Facet 3: bottom-right -->
+  <polygon points="14,19 22.5,14 12,25" fill="white" fill-opacity="0.85" clip-path="url(#s)"/>
+  <!-- Facet 4: bottom-left (shadow) -->
+  <polygon points="4,16 9,11 14,19 12,25 1.5,14" fill="white" fill-opacity="0.45" clip-path="url(#s)"/>
+</svg>

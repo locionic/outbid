@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+
+  <!-- Warm off-white field -->
+  <rect width="500" height="500" fill="#F5F3F0"/>
+
+  <!-- Outer border frame -->
+  <rect x="8" y="8" width="484" height="484" fill="none" stroke="#141414" stroke-width="10"/>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  RIGHT PANEL — Mondrian tile grid   ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+
+  <!-- Large champion / coral block -->
+  <rect x="289" y="13"  width="190" height="302" fill="#E8736C"/>
+
+  <!-- Row 2 — mint + lilac -->
+  <rect x="289" y="315" width="115" height="98"  fill="#A4D1D0"/>
+  <rect x="404" y="315" width="79"  height="98"  fill="#C4A9D6"/>
+
+  <!-- Row 3 — blue-lilac · yellow · background -->
+  <rect x="289" y="413" width="63"  height="74"  fill="#A7A9D1"/>
+  <rect x="352" y="413" width="65"  height="74"  fill="#F8E1A9"/>
+  <rect x="417" y="413" width="66"  height="74"  fill="#F5F3F0"/>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  GRID LINES                         ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+
+  <!-- Vertical divider: wordmark | tiles -->
+  <line x1="289" y1="8"   x2="289" y2="492" stroke="#141414" stroke-width="8"/>
+
+  <!-- Horizontal: coral | row 2 -->
+  <line x1="289" y1="315" x2="492" y2="315" stroke="#141414" stroke-width="5"/>
+
+  <!-- Horizontal: row 2 | row 3 -->
+  <line x1="289" y1="413" x2="492" y2="413" stroke="#141414" stroke-width="4"/>
+
+  <!-- Vertical within row 2 (mint | lilac) -->
+  <line x1="404" y1="315" x2="404" y2="413" stroke="#141414" stroke-width="4"/>
+
+  <!-- Verticals within row 3 -->
+  <line x1="352" y1="413" x2="352" y2="492" stroke="#141414" stroke-width="4"/>
+  <line x1="417" y1="413" x2="417" y2="492" stroke="#141414" stroke-width="4"/>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  TILE LETTERS                       ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+
+  <!-- "L" — large, upper half of champion tile -->
+  <text
+    x="300" y="218"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="148"
+    fill="#141414">L</text>
+
+  <!-- "A" — mint tile, centred -->
+  <text
+    x="346" y="393"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="64"
+    text-anchor="middle"
+    fill="#141414">A</text>
+
+  <!-- "C" — lilac tile, centred -->
+  <text
+    x="443" y="392"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="64"
+    text-anchor="middle"
+    fill="#141414">C</text>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  LEFT WORDMARK                      ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+
+  <text
+    x="22" y="150"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="80"
+    fill="#141414"
+    textLength="254"
+    lengthAdjust="spacingAndGlyphs">BIGGEST</text>
+
+  <text
+    x="22" y="272"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="80"
+    fill="#141414"
+    textLength="254"
+    lengthAdjust="spacingAndGlyphs">LOGO</text>
+
+  <text
+    x="22" y="394"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-weight="900"
+    font-size="80"
+    fill="#141414"
+    textLength="254"
+    lengthAdjust="spacingAndGlyphs">WINS</text>
+
+</svg>

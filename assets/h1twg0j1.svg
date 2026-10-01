@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified hot tub icon for favicon - just the tub and water -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+     width="512" height="512" viewBox="0 0 512 512">
+<style type="text/css">
+	.water{fill:#3AA2E9;}
+	.tub{fill:#F8C700;}
+</style>
+<g transform="translate(256, 256)">
+	<!-- Yellow U-shaped hot tub (centered and scaled) -->
+	<path class="tub" d="M-160,-80 v100 c0,88 72,160 160,160 s160,-72 160,-160 v-100 h-80 v100 c0,44 -36,80 -80,80 s-80,-36 -80,-80 v-100 z"/>
+	
+	<!-- Blue water waves inside -->
+	<path class="water" d="M-80,20 c0,44 36,80 80,80 s80,-36 80,-80 v-40 c-10,-5 -20,-3 -30,3 c-8,5 -14,13 -22,18 c-14,10 -34,12 -48,2 c-10,-7 -16,-17 -26,-23 c-10,-5 -22,-5 -34,-1 z"/>
+	
+	<!-- Simple steam lines above -->
+	<path class="water" opacity="0.6" d="M-60,-120 q-10,-20 0,-40 M0,-120 q-10,-20 0,-40 M60,-120 q-10,-20 0,-40"/>
+</g>
+</svg>

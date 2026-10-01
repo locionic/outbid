@@ -1,0 +1,8 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Interlocking-hooks mark: one arc plus itself rotated 180 degrees.
+       Generated from the geometry in src/components/landing/logo-constants.ts —
+       keep them in step. -->
+  <rect width="600" height="600" rx="133" fill="#1A1A1A"/>
+  <path d="M387.19 174.17A108.75 108.75 0 1 0 201.69 281.27L288.47 384.69" stroke="white" stroke-width="82.5" stroke-linecap="butt"/>
+  <path d="M387.19 174.17A108.75 108.75 0 1 0 201.69 281.27L288.47 384.69" stroke="white" stroke-width="82.5" stroke-linecap="butt" transform="rotate(180 300 300)"/>
+</svg>

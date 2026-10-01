@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E1030"/>
+      <stop offset="100%" stop-color="#151744"/>
+    </linearGradient>
+
+    <!-- Neon green -->
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00FF66"/>
+      <stop offset="100%" stop-color="#57FF83"/>
+    </linearGradient>
+
+    <!-- Subtle glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded background -->
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+
+  <g fill="url(#g)" filter="url(#glow)">
+    <!-- Chevron -->
+    <path d="M20 18 L34 32 L20 46 L16 42 L26 32 L16 22 Z"/>
+
+    <!-- Underscore -->
+    <rect x="30" y="40" width="18" height="4" rx="1"/>
+  </g>
+</svg>

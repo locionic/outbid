@@ -1,0 +1,7 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AnswerDeck">
+  <g fill="#22352A" stroke="#22352A" stroke-width="4" stroke-linejoin="round">
+    <path d="M64 20 L110 42 L64 64 L18 42 Z"/>
+    <path d="M18 64 L33 57 L64 72 L95 57 L110 64 L64 86 Z"/>
+    <path d="M18 86 L33 79 L64 94 L95 79 L110 86 L64 108 Z"/>
+  </g>
+</svg>

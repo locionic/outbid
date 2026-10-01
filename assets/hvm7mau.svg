@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#f3f0e8"/>
+  <circle cx="32" cy="32" r="24" fill="#dbe97c" stroke="#17352c" stroke-width="2"/>
+  <text x="32" y="39" fill="#17352c" font-family="Georgia, 'Times New Roman', serif" font-size="20" text-anchor="middle" letter-spacing="-1.5">SP</text>
+</svg>

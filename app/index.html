@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>outbid.lol leaderboard — local mirror</title>
+<meta name="description" content="Browse the outbid.lol all-time pay-to-rank leaderboard from a local snapshot.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <h1>outbid.lol <span class="sub">all-time leaderboard</span></h1>
+    <p class="lede">
+      Rank is what you paid, and nothing else. This is a local snapshot of the
+      public board — the top listings per category.
+    </p>
+    <dl class="stats" id="stats">
+      <div><dt>Listings</dt><dd id="stat-count">—</dd></div>
+      <div><dt>Total paid</dt><dd id="stat-spend">—</dd></div>
+      <div><dt>Clicks</dt><dd id="stat-clicks">—</dd></div>
+      <div><dt>Window</dt><dd id="stat-window">—</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="controls" id="controls" role="search">
+    <div class="field">
+      <label for="q">Search</label>
+      <input type="search" id="q" name="q" placeholder="name, description, or URL" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="category">Category</label>
+      <select id="category" name="category"></select>
+    </div>
+    <div class="field">
+      <label for="sort">Sort by</label>
+      <select id="sort" name="sort">
+        <option value="spend">Paid</option>
+        <option value="clicks">Clicks</option>
+        <option value="newest">Newest</option>
+        <option value="name">Name</option>
+      </select>
+    </div>
+    <div class="field">
+      <button type="button" id="export">Export CSV</button>
+    </div>
+  </form>
+
+  <p class="result-count" id="result-count" role="status" aria-live="polite">Loading…</p>
+
+  <details class="panel" id="panel">
+    <summary>Where the money goes <span class="panel-note" id="panel-note"></span></summary>
+    <table class="cats">
+      <caption class="sr-only">Total paid per category, for the current filter</caption>
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col" class="cat-bar-col"><span class="sr-only">Share of category spend</span></th>
+          <th scope="col" class="num">Paid</th>
+        </tr>
+      </thead>
+      <tbody id="cat-rows"></tbody>
+    </table>
+  </details>
+
+  <div class="table-scroll">
+    <table id="board">
+      <caption class="sr-only">Listings ranked by amount paid</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="num">#</th>
+          <th scope="col">Listing</th>
+          <th scope="col" class="col-cat">Category</th>
+          <th scope="col" class="num">Paid</th>
+          <th scope="col" class="num">Clicks</th>
+          <th scope="col" class="col-date">Listed</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <p class="empty" id="empty" hidden>No listings match that search.</p>
+</main>
+
+<footer class="wrap footnote">
+  <p>
+    Snapshot of <code>outbid.lol</code>, captured 2026-09-01, by Jonathan Wilke
+    (<a href="https://x.com/jonathan_wilke">@jonathan_wilke</a>). No ads, no API keys,
+    no revenue share.
+  </p>
+  <p>
+    The original board also runs <em>Today</em> (rolling 24&nbsp;h) and <em>Daily</em>
+    (UTC calendar day) views. Those are not reproduced here: the snapshot stores one
+    running total per listing rather than a payment history, so per-day spend cannot
+    be recovered.
+  </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

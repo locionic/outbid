@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- LoWisa app icon — the colourful pinwheel bloom (matches brand reference).
+       8 bold SOLID rainbow petals spiral around a bright white four-point star,
+       on a clean white rounded tile so the colours pop and it reads at any size.
+       Flat, vivid, high-contrast — maximum visibility. -->
+  <defs>
+    <!-- subtle per-petal shading: brighter tip -> deeper base, keeps it flat
+         but gives the blades life without any blur -->
+    <linearGradient id="pBlue"   x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3f8bff"/><stop offset="1" stop-color="#1f5fe0"/></linearGradient>
+    <linearGradient id="pCyan"   x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#37cdf5"/><stop offset="1" stop-color="#12a6dd"/></linearGradient>
+    <linearGradient id="pTeal"   x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#22d3a8"/><stop offset="1" stop-color="#0eb488"/></linearGradient>
+    <linearGradient id="pGreen"  x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6dd433"/><stop offset="1" stop-color="#45b016"/></linearGradient>
+    <linearGradient id="pViolet" x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8b46f5"/><stop offset="1" stop-color="#6a1fe0"/></linearGradient>
+    <linearGradient id="pPink"   x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff4aa8"/><stop offset="1" stop-color="#f01c86"/></linearGradient>
+    <linearGradient id="pOrange" x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff9424"/><stop offset="1" stop-color="#ff6a12"/></linearGradient>
+    <linearGradient id="pYellow" x1="0" y1="-114" x2="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffd23d"/><stop offset="1" stop-color="#ffb01f"/></linearGradient>
+  </defs>
+
+  <!-- White rounded tile -->
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="#ffffff"/>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="none" stroke="#e6e9f0" stroke-width="2"/>
+
+  <!-- Pinwheel of 8 solid petals (blade leans clockwise for the spin) -->
+  <g transform="translate(128 128)">
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pBlue)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pCyan)"   transform="rotate(45)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pTeal)"   transform="rotate(90)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pGreen)"  transform="rotate(135)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pViolet)" transform="rotate(180)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pPink)"   transform="rotate(225)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pOrange)" transform="rotate(270)"/>
+    <path d="M0 0 C46 -20 44 -80 8 -114 C-22 -82 -30 -34 0 0 Z" fill="url(#pYellow)" transform="rotate(315)"/>
+  </g>
+
+  <!-- Bright white four-point star at the heart -->
+  <g transform="translate(128 122)">
+    <path d="M0 -46 C6 -14 14 -6 46 0 C14 6 6 14 0 46 C-6 14 -14 6 -46 0 C-14 -6 -6 -14 0 -46 Z"
+          fill="#ffffff"/>
+    <circle cx="0" cy="0" r="5" fill="#ffffff"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 405 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-4950,-1170)">
+        <g id="Logo-Icon-only--Dark" serif:id="Logo(Icon only) Dark" transform="matrix(2.020379,0,0,2.014273,-5994.623536,-1289.86743)">
+            <rect x="5417.113" y="1221.219" width="200.457" height="254.186" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="5417.113" y="1221.219" width="200.457" height="254.186"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g transform="matrix(0.193936,0,0,0.194524,5312.608676,1181.061078)">
+                    <g transform="matrix(1,0,0,1,566.519873,1428.924105)">
+                        <path d="M0,-1156.727C25.354,-1234.125 73.831,-1240.954 151.495,-1188.997C230.613,-1136.064 376.74,-949.027 376.74,-949.027L610.004,-950.619C827.386,-952.104 1004.408,-776.284 1004.408,-558.896L1004.408,-307.506C1004.408,-91.156 829.027,84.227 612.677,84.227L365.638,84.227C149.291,84.227 -26.096,-91.156 -26.096,-307.506L-26.096,-796.498C-26.096,-897.314 -25.354,-1079.329 0,-1156.727" style="fill:rgb(38,98,217);fill-rule:nonzero;"/>
+                    </g>
+                    <g transform="matrix(1.843079,0,0,1.843079,-7795.499568,-749.204846)">
+                        <circle cx="4802.385" cy="946.746" r="24.751" style="fill:white;"/>
+                    </g>
+                    <g transform="matrix(1.843079,0,0,1.843079,-7663.757344,-749.204846)">
+                        <circle cx="4802.385" cy="946.746" r="24.751" style="fill:white;"/>
+                    </g>
+                    <g transform="matrix(1.843079,0,0,1.843079,-7927.241793,-749.204846)">
+                        <circle cx="4802.385" cy="946.746" r="24.751" style="fill:white;"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

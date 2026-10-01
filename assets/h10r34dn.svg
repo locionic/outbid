@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WUZIQI Gomoku">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F0EEE9"/>
+      <stop offset="55%" stop-color="#D3E4F1"/>
+      <stop offset="100%" stop-color="#B7D1EA"/>
+    </linearGradient>
+    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#283742"/>
+      <stop offset="100%" stop-color="#1A1E23"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <rect width="64" height="64" rx="14" fill="url(#gd)" class="dark"/>
+  <text x="32" y="45" font-family="'PingFang SC','Songti SC',serif" font-size="42" font-weight="500" text-anchor="middle"
+        fill="#1A1E23" class="mark">五</text>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      rect:first-of-type { display: none; }
+      .mark { fill: #F0EEE9; }
+    }
+    @media (prefers-color-scheme: light) {
+      .dark { display: none; }
+    }
+  </style>
+</svg>
