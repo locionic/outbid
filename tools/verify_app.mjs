@@ -188,7 +188,7 @@ console.log('\nP2.2  CSV export');
   const csv = await evaluate('toCsv()');
   const lines = csv.split('\r\n');
   const shownRows = await evaluate('document.getElementById("rows").children.length');
-  eq('header row', lines[0], 'Rank,Name,Description,Category,Paid USD,Clicks,Listed,URL');
+  eq('header row', lines[0], 'Rank,Name,Description,Category,Paid USD,Clicks,Est CPC USD,Listed,URL');
   eq('one line per visible row', lines.length, shownRows + 1);
   ok('CRLF line endings, not bare LF', !/(^|[^\r])\n/.test(csv));
   ok('dates are ISO days', /,\d{4}-\d{2}-\d{2},https?:/.test(lines[1]), lines[1].slice(0, 120));

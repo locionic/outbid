@@ -12,7 +12,14 @@
 
 <header class="masthead">
   <div class="wrap">
-    <h1>outbid.lol <span class="sub">all-time leaderboard</span></h1>
+    <div class="header-top">
+      <h1>outbid.lol <span class="sub">all-time leaderboard</span></h1>
+      <div class="theme-switch" role="group" aria-label="Color theme">
+        <button type="button" class="theme-btn active" data-theme-set="auto" aria-pressed="true" title="Follow system theme">Auto</button>
+        <button type="button" class="theme-btn" data-theme-set="light" aria-pressed="false" title="Light theme">Light</button>
+        <button type="button" class="theme-btn" data-theme-set="dark" aria-pressed="false" title="Dark theme">Dark</button>
+      </div>
+    </div>
     <p class="lede">
       Rank is what you paid, and nothing else. This is a local snapshot of the
       public board — the top listings per category.
@@ -21,6 +28,7 @@
       <div><dt>Listings</dt><dd id="stat-count">—</dd></div>
       <div><dt>Total paid</dt><dd id="stat-spend">—</dd></div>
       <div><dt>Clicks</dt><dd id="stat-clicks">—</dd></div>
+      <div><dt>Avg CPC</dt><dd id="stat-cpc">—</dd></div>
       <div><dt>Window</dt><dd id="stat-window">—</dd></div>
     </dl>
   </div>
@@ -29,7 +37,7 @@
 <main class="wrap">
   <form class="controls" id="controls" role="search">
     <div class="field">
-      <label for="q">Search</label>
+      <label for="q">Search <kbd class="kbd-hint" aria-hidden="true">/</kbd></label>
       <input type="search" id="q" name="q" placeholder="name, description, or URL" autocomplete="off">
     </div>
     <div class="field">
@@ -37,10 +45,30 @@
       <select id="category" name="category"></select>
     </div>
     <div class="field">
+      <label for="tier">Spend Tier</label>
+      <select id="tier" name="tier">
+        <option value="">All amounts</option>
+        <option value="whale">$1,000+ (Whale)</option>
+        <option value="high">$250 – $999</option>
+        <option value="mid">$50 – $249</option>
+        <option value="low">&lt; $50</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="platform">Platform</label>
+      <select id="platform" name="platform">
+        <option value="">All platforms</option>
+        <option value="website">Websites</option>
+        <option value="x">X profiles</option>
+      </select>
+    </div>
+    <div class="field">
       <label for="sort">Sort by</label>
       <select id="sort" name="sort">
         <option value="spend">Paid</option>
         <option value="clicks">Clicks</option>
+        <option value="cpc_asc">Est. CPC (Best value)</option>
+        <option value="cpc_desc">Est. CPC (Highest)</option>
         <option value="newest">Newest</option>
         <option value="name">Name</option>
       </select>
@@ -54,6 +82,28 @@
 
   <details class="panel" id="panel">
     <summary>Where the money goes <span class="panel-note" id="panel-note"></span></summary>
+    <div class="tier-summary" id="tier-summary" role="region" aria-label="Spend concentration tiers">
+      <div class="tier-tile" data-tier-filter="whale" role="button" tabindex="0" title="Filter to $1,000+ listings">
+        <span class="tier-label">Whales ($1k+)</span>
+        <span class="tier-val" id="tier-val-whale">—</span>
+        <span class="tier-meta" id="tier-meta-whale">—</span>
+      </div>
+      <div class="tier-tile" data-tier-filter="high" role="button" tabindex="0" title="Filter to $250-$999 listings">
+        <span class="tier-label">High ($250–$999)</span>
+        <span class="tier-val" id="tier-val-high">—</span>
+        <span class="tier-meta" id="tier-meta-high">—</span>
+      </div>
+      <div class="tier-tile" data-tier-filter="mid" role="button" tabindex="0" title="Filter to $50-$249 listings">
+        <span class="tier-label">Mid ($50–$249)</span>
+        <span class="tier-val" id="tier-val-mid">—</span>
+        <span class="tier-meta" id="tier-meta-mid">—</span>
+      </div>
+      <div class="tier-tile" data-tier-filter="low" role="button" tabindex="0" title="Filter to <$50 listings">
+        <span class="tier-label">Entry (&lt;$50)</span>
+        <span class="tier-val" id="tier-val-low">—</span>
+        <span class="tier-meta" id="tier-meta-low">—</span>
+      </div>
+    </div>
     <table class="cats">
       <caption class="sr-only">Total paid per category, for the current filter</caption>
       <thead>
@@ -77,6 +127,7 @@
           <th scope="col" class="col-cat">Category</th>
           <th scope="col" class="num">Paid</th>
           <th scope="col" class="num">Clicks</th>
+          <th scope="col" class="num col-cpc">Est. CPC</th>
           <th scope="col" class="col-date">Listed</th>
         </tr>
       </thead>
@@ -85,6 +136,39 @@
   </div>
 
   <p class="empty" id="empty" hidden>No listings match that search.</p>
+
+  <dialog class="modal" id="detail-modal" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <header class="modal-head">
+        <div class="modal-brand">
+          <div id="modal-avatar-slot"></div>
+          <div class="modal-title-wrap">
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-badges" class="modal-badges"></div>
+          </div>
+        </div>
+        <button type="button" class="modal-close" id="modal-close" aria-label="Close dialog">&times;</button>
+      </header>
+      <div class="modal-body">
+        <p id="modal-desc" class="modal-desc"></p>
+        <dl class="modal-grid">
+          <div><dt>Overall Rank</dt><dd id="modal-rank-overall">—</dd></div>
+          <div><dt>Category Rank</dt><dd id="modal-rank-cat">—</dd></div>
+          <div><dt>Total Paid</dt><dd id="modal-paid">—</dd></div>
+          <div><dt>Total Clicks</dt><dd id="modal-clicks">—</dd></div>
+          <div><dt>Est. Cost / Click</dt><dd id="modal-cpc">—</dd></div>
+          <div><dt>Listed Date</dt><dd id="modal-date">—</dd></div>
+          <div class="col-span-2"><dt>Identity Key</dt><dd id="modal-identity">—</dd></div>
+        </dl>
+        <div class="modal-actions">
+          <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Visit website <span class="sr-only"> (opens in a new tab)</span></a>
+          <button type="button" id="modal-filter-cat" class="btn btn-subtle">Filter category</button>
+          <button type="button" id="modal-copy-link" class="btn btn-subtle">Copy share link</button>
+          <span id="modal-copy-status" class="copy-status" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </dialog>
 </main>
 
 <footer class="wrap footnote">

@@ -35,9 +35,38 @@ const day = (iso) => iso.slice(0, 10);
 const bySpend = (a, b) =>
   b.amountCents - a.amountCents || a.createdAt.localeCompare(b.createdAt);
 
+/* Cost per click calculation in USD. Returns null if clicks are zero or invalid. */
+function calcCpc(e) {
+  if (!e.clickCount || e.clickCount <= 0) return null;
+  return (e.amountCents / e.clickCount) / 100;
+}
+
+function formatCpc(e) {
+  const c = calcCpc(e);
+  if (c === null) return '—';
+  if (c < 0.01) return '<$0.01';
+  return '$' + c.toFixed(2);
+}
+
 const SORTS = {
   spend: bySpend,
-  clicks: (a, b) => b.clickCount - a.clickCount,
+  clicks: (a, b) => b.clickCount - a.clickCount || bySpend(a, b),
+  cpc_asc: (a, b) => {
+    const ca = calcCpc(a);
+    const cb = calcCpc(b);
+    if (ca === null && cb === null) return bySpend(a, b);
+    if (ca === null) return 1;
+    if (cb === null) return -1;
+    return ca - cb || bySpend(a, b);
+  },
+  cpc_desc: (a, b) => {
+    const ca = calcCpc(a);
+    const cb = calcCpc(b);
+    if (ca === null && cb === null) return bySpend(a, b);
+    if (ca === null) return 1;
+    if (cb === null) return -1;
+    return cb - ca || bySpend(a, b);
+  },
   newest: (a, b) => b.createdAt.localeCompare(a.createdAt),
   name: (a, b) => a.displayName.localeCompare(b.displayName),
 };
@@ -47,6 +76,27 @@ let categories = [];
 let catName = new Map();
 let shown = [];   // current view, in display order
 let rankOf = new Map();
+let overallRankOf = new Map();
+let categoryRankOf = new Map();
+let catCounts = new Map();
+let activeModalId = null;
+
+function computeRanks() {
+  const sorted = entries.slice().sort(bySpend);
+  overallRankOf = new Map(sorted.map((e, i) => [e.id, i + 1]));
+
+  const byCat = new Map();
+  for (const e of sorted) {
+    if (!byCat.has(e.categorySlug)) byCat.set(e.categorySlug, []);
+    byCat.get(e.categorySlug).push(e);
+  }
+  categoryRankOf = new Map();
+  catCounts = new Map();
+  for (const [slug, list] of byCat.entries()) {
+    catCounts.set(slug, list.length);
+    list.forEach((e, i) => categoryRankOf.set(e.id, i + 1));
+  }
+}
 
 /* ---------- shareable URL state ----------
  * Filters live in location.hash so a view survives reload and can be pasted to
@@ -56,14 +106,27 @@ function readState() {
   const p = new URLSearchParams(location.hash.slice(1));
   if (p.get('q')) el('q').value = p.get('q');
   if (p.has('category')) el('category').value = p.get('category');
+  if (p.get('tier')) el('tier').value = p.get('tier');
+  if (p.get('platform')) el('platform').value = p.get('platform');
   if (p.get('sort')) el('sort').value = p.get('sort');
+
+  const itemId = p.get('item');
+  if (itemId) {
+    const item = entries.find((x) => x.id === itemId);
+    if (item) openDetail(item, false);
+  } else if (activeModalId) {
+    closeModal(false);
+  }
 }
 
 function writeState() {
   const p = new URLSearchParams();
   if (el('q').value.trim()) p.set('q', el('q').value);
   if (el('category').value) p.set('category', el('category').value);
+  if (el('tier').value) p.set('tier', el('tier').value);
+  if (el('platform').value) p.set('platform', el('platform').value);
   if (el('sort').value !== 'spend') p.set('sort', el('sort').value);
+  if (activeModalId) p.set('item', activeModalId);
   const h = p.toString();
   history.replaceState(null, '', h ? '#' + h : location.pathname + location.search);
 }
@@ -79,18 +142,23 @@ const csvField = (v) => {
 };
 
 function toCsv() {
-  const head = ['Rank', 'Name', 'Description', 'Category', 'Paid USD', 'Clicks', 'Listed', 'URL'];
-  const body = shown.map((e) => [
-    rankOf.get(e.id), e.displayName, e.description,
-    catName.get(e.categorySlug) || e.categorySlug,
-    (e.amountCents / 100).toFixed(2), e.clickCount, day(e.createdAt), e.sourceUrl,
-  ]);
+  const head = ['Rank', 'Name', 'Description', 'Category', 'Paid USD', 'Clicks', 'Est CPC USD', 'Listed', 'URL'];
+  const body = shown.map((e) => {
+    const c = calcCpc(e);
+    return [
+      rankOf.get(e.id), e.displayName, e.description,
+      catName.get(e.categorySlug) || e.categorySlug,
+      (e.amountCents / 100).toFixed(2), e.clickCount,
+      c !== null ? c.toFixed(2) : '',
+      day(e.createdAt), e.sourceUrl,
+    ];
+  });
   return [head, ...body].map((r) => r.map(csvField).join(',')).join('\r\n');
 }
 
 function exportCsv() {
   // BOM so Excel renders the em-dashes and curly quotes in these listings correctly.
-  const blob = new Blob(['﻿' + toCsv()], { type: 'text/csv;charset=utf-8' });
+  const blob = new Blob(['\ufeff' + toCsv()], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -114,7 +182,10 @@ function row(e, rank) {
     ? `<img class="avatar" src="${esc(src)}" alt="" width="32" height="32" loading="lazy" onerror="this.remove();this.nextElementSibling.hidden=false"><span class="avatar avatar-fallback" hidden aria-hidden="true">${letter}</span>`
     : `<span class="avatar avatar-fallback" aria-hidden="true">${letter}</span>`;
 
-  return `<tr>
+  const cpcVal = calcCpc(e);
+  const cpcClass = cpcVal !== null && cpcVal < 0.10 ? ' cpc-good' : '';
+
+  return `<tr data-id="${esc(e.id)}">
     <td class="num rank">${rank}</td>
     <td><span class="listing">${avatar}<span>
       ${label}${badge}
@@ -123,6 +194,7 @@ function row(e, rank) {
     <td class="col-cat"><span class="cat">${esc(catName.get(e.categorySlug) || e.categorySlug)}</span></td>
     <td class="num paid">${usd.format(e.amountCents / 100)}</td>
     <td class="num">${num.format(e.clickCount)}</td>
+    <td class="num cpc col-cpc${cpcClass}">${formatCpc(e)}</td>
     <td class="date col-date">${day(e.createdAt)}</td>
   </tr>`;
 }
@@ -130,6 +202,20 @@ function row(e, rank) {
 function matches(e, needle) {
   return [e.displayName, e.description, e.sourceUrl, e.identityKey]
     .some((f) => String(f ?? '').toLowerCase().includes(needle));
+}
+
+function matchTier(e, tier) {
+  if (!tier) return true;
+  if (tier === 'whale') return e.amountCents >= 100000;
+  if (tier === 'high') return e.amountCents >= 25000 && e.amountCents < 100000;
+  if (tier === 'mid') return e.amountCents >= 5000 && e.amountCents < 25000;
+  if (tier === 'low') return e.amountCents < 5000;
+  return true;
+}
+
+function matchPlatform(e, platform) {
+  if (!platform) return true;
+  return e.identityType === platform;
 }
 
 /* Category spend panel. One series, so every bar wears the same hue — coloring
@@ -162,9 +248,91 @@ function renderCats(rows) {
   el('panel-note').textContent = `${list.length} categor${list.length === 1 ? 'y' : 'ies'} · ${usd.format(grand / 100)} in this view`;
 }
 
+function renderTierSummary(rows) {
+  const counts = { whale: 0, high: 0, mid: 0, low: 0 };
+  const sums = { whale: 0, high: 0, mid: 0, low: 0 };
+  for (const e of rows) {
+    let t = 'low';
+    if (e.amountCents >= 100000) t = 'whale';
+    else if (e.amountCents >= 25000) t = 'high';
+    else if (e.amountCents >= 5000) t = 'mid';
+    counts[t] += 1;
+    sums[t] += e.amountCents;
+  }
+  const grand = rows.reduce((s, e) => s + e.amountCents, 0) || 1;
+  for (const t of ['whale', 'high', 'mid', 'low']) {
+    const valEl = el(`tier-val-${t}`);
+    const metaEl = el(`tier-meta-${t}`);
+    if (valEl) valEl.textContent = usd.format(sums[t] / 100);
+    if (metaEl) {
+      const pct = ((sums[t] / grand) * 100).toFixed(1);
+      metaEl.textContent = `${num.format(counts[t])} listings · ${pct}%`;
+    }
+  }
+}
+
+function openDetail(e, syncState = true) {
+  if (!e) return;
+  activeModalId = e.id;
+  const modal = el('detail-modal');
+  el('modal-title').textContent = e.displayName;
+  el('modal-desc').textContent = e.description || 'No description provided.';
+
+  const src = safeImage(e.imageUrl);
+  const letter = (e.displayName || '?').trim().charAt(0);
+  el('modal-avatar-slot').innerHTML = src
+    ? `<img class="avatar" src="${esc(src)}" alt="" width="44" height="44" onerror="this.remove();this.nextElementSibling.hidden=false"><span class="avatar avatar-fallback" hidden>${esc(letter)}</span>`
+    : `<span class="avatar avatar-fallback">${esc(letter)}</span>`;
+
+  const catLabel = catName.get(e.categorySlug) || e.categorySlug;
+  el('modal-badges').innerHTML =
+    `<span class="cat">${esc(catLabel)}</span>` +
+    (e.identityType === 'x' ? '<span class="x-badge">X profile</span>' : '<span class="x-badge">Website</span>');
+
+  const oRank = overallRankOf.get(e.id) || '—';
+  const cRank = categoryRankOf.get(e.id) || '—';
+  const cTotal = catCounts.get(e.categorySlug) || 50;
+
+  el('modal-rank-overall').textContent = `#${oRank} of ${num.format(entries.length)}`;
+  el('modal-rank-cat').textContent = `#${cRank} of ${cTotal} in ${catLabel}`;
+  el('modal-paid').textContent = usd.format(e.amountCents / 100);
+  el('modal-clicks').textContent = num.format(e.clickCount);
+  el('modal-cpc').textContent = formatCpc(e) + (calcCpc(e) !== null ? ' / click' : '');
+  el('modal-date').textContent = new Date(e.createdAt).toUTCString().replace('GMT', 'UTC');
+  el('modal-identity').textContent = e.identityKey;
+
+  const link = el('modal-link');
+  const href = safeLink(e.sourceUrl);
+  if (href) {
+    link.href = href;
+    link.hidden = false;
+  } else {
+    link.hidden = true;
+  }
+
+  el('modal-filter-cat').onclick = () => {
+    el('category').value = e.categorySlug;
+    closeModal();
+    render();
+  };
+
+  el('modal-copy-status').textContent = '';
+  if (!modal.open) modal.showModal();
+  if (syncState) writeState();
+}
+
+function closeModal(syncState = true) {
+  const modal = el('detail-modal');
+  if (modal.open) modal.close();
+  activeModalId = null;
+  if (syncState) writeState();
+}
+
 function render() {
   const needle = el('q').value.trim().toLowerCase();
   const cat = el('category').value;
+  const tier = el('tier').value;
+  const platform = el('platform').value;
   const sorter = SORTS[el('sort').value] || bySpend;
 
   // Rank reflects position on the board being viewed (all-time, or one category),
@@ -174,7 +342,13 @@ function render() {
     .sort(bySpend);
   rankOf = new Map(board.map((e, i) => [e.id, i + 1]));
 
-  shown = (needle ? board.filter((e) => matches(e, needle)) : board)
+  shown = board
+    .filter((e) => {
+      if (needle && !matches(e, needle)) return false;
+      if (!matchTier(e, tier)) return false;
+      if (!matchPlatform(e, platform)) return false;
+      return true;
+    })
     .slice()
     .sort(sorter);
 
@@ -186,16 +360,20 @@ function render() {
   el('empty').hidden = shown.length > 0;
 
   renderCats(shown);
+  renderTierSummary(shown);
   writeState();
 }
 
 function stats() {
   const dates = entries.map((e) => e.createdAt).sort();
   el('stat-count').textContent = num.format(entries.length);
-  el('stat-spend').textContent =
-    usd.format(entries.reduce((a, e) => a + e.amountCents, 0) / 100);
-  el('stat-clicks').textContent =
-    num.format(entries.reduce((a, e) => a + e.clickCount, 0));
+  const totalPaid = entries.reduce((a, e) => a + e.amountCents, 0);
+  const totalClicks = entries.reduce((a, e) => a + e.clickCount, 0);
+  el('stat-spend').textContent = usd.format(totalPaid / 100);
+  el('stat-clicks').textContent = num.format(totalClicks);
+  if (el('stat-cpc')) {
+    el('stat-cpc').textContent = totalClicks > 0 ? '$' + ((totalPaid / totalClicks) / 100).toFixed(2) : '—';
+  }
   el('stat-window').textContent = `${day(dates[0])} → ${day(dates[dates.length - 1])}`;
 }
 
@@ -210,7 +388,34 @@ function populateCategories() {
       .join('');
 }
 
+function initTheme() {
+  const saved = localStorage.getItem('outbid-theme') || 'auto';
+  setTheme(saved);
+  document.querySelectorAll('.theme-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setTheme(btn.dataset.themeSet);
+    });
+  });
+}
+
+function setTheme(theme) {
+  if (theme === 'auto') {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('outbid-theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('outbid-theme', theme);
+  }
+  document.querySelectorAll('.theme-btn').forEach((b) => {
+    const active = b.dataset.themeSet === theme;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-pressed', String(active));
+  });
+}
+
 function init() {
+  initTheme();
+
   const [e, c] = [
     fetch(DATA + 'entries.json').then((r) => r.json()),
     fetch(DATA + 'categories.json').then((r) => r.json()),
@@ -220,6 +425,7 @@ function init() {
     categories = categoriesJson;
     catName = new Map(categories.map((x) => [x.slug, x.name]));
 
+    computeRanks();
     stats();
     populateCategories();
     readState();
@@ -227,8 +433,72 @@ function init() {
 
     el('q').addEventListener('input', render);
     el('category').addEventListener('change', render);
+    el('tier').addEventListener('change', render);
+    el('platform').addEventListener('change', render);
     el('sort').addEventListener('change', render);
     el('export').addEventListener('click', exportCsv);
+
+    // Row click opens detail modal
+    el('rows').addEventListener('click', (evt) => {
+      if (evt.target.closest('a')) return;
+      const tr = evt.target.closest('tr[data-id]');
+      if (!tr) return;
+      const item = entries.find((x) => x.id === tr.dataset.id);
+      if (item) openDetail(item);
+    });
+
+    // Modal dialog controls
+    el('modal-close').addEventListener('click', () => closeModal());
+    el('detail-modal').addEventListener('click', (evt) => {
+      if (!evt.target.closest('.modal-card')) closeModal();
+    });
+
+    // Copy share link
+    el('modal-copy-link').addEventListener('click', async () => {
+      if (!activeModalId) return;
+      const url = new URL(location.href);
+      url.hash = `item=${activeModalId}`;
+      try {
+        await navigator.clipboard.writeText(url.toString());
+        el('modal-copy-status').textContent = 'Link copied!';
+        setTimeout(() => { if (el('modal-copy-status')) el('modal-copy-status').textContent = ''; }, 2500);
+      } catch {
+        el('modal-copy-status').textContent = 'Copy failed';
+      }
+    });
+
+    // Tier summary tile click
+    document.querySelectorAll('.tier-tile').forEach((tile) => {
+      const handler = () => {
+        const filter = tile.dataset.tierFilter;
+        el('tier').value = el('tier').value === filter ? '' : filter;
+        render();
+      };
+      tile.addEventListener('click', handler);
+      tile.addEventListener('keydown', (evt) => {
+        if (evt.key === 'Enter' || evt.key === ' ') {
+          evt.preventDefault();
+          handler();
+        }
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === '/' && !['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        evt.preventDefault();
+        el('q').focus();
+        el('q').select();
+      } else if (evt.key === 'Escape') {
+        const modal = el('detail-modal');
+        if (modal.open) {
+          closeModal();
+        } else if (document.activeElement === el('q') && el('q').value) {
+          el('q').value = '';
+          render();
+        }
+      }
+    });
 
     // Back/forward between shared views. render() uses replaceState, so it will not
     // re-trigger this; only genuine hash navigation arrives here.
