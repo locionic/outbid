@@ -96,7 +96,14 @@ function computeRanks() {
     catCounts.set(slug, list.length);
     list.forEach((e, i) => categoryRankOf.set(e.id, i + 1));
   }
+  categoryBoards = byCat;
 }
+
+/* The category boards themselves, in board order (spend desc), cached so the
+ * search box can re-filter one without rebuilding it. Ten categories, so a Map of
+ * arrays costs nothing next to the filter that reads it. */
+let categoryBoards = new Map();
+const categoryBoard = (slug) => categoryBoards.get(slug) || [];
 
 /* ---------- shareable URL state ----------
  * Filters live in location.hash so a view survives reload and can be pasted to
@@ -199,75 +206,86 @@ function row(e, rank) {
   </tr>`;
 }
 
-function matches(e, needle) {
-  return [e.displayName, e.description, e.sourceUrl, e.identityKey]
-    .some((f) => String(f ?? '').toLowerCase().includes(needle));
+/* ---------- search ----------
+ * A listing is matched against four fields, and the needle is always a plain
+ * substring: it comes from a text box, so it is not a pattern and must never be
+ * compiled as one. Folding the four fields into one lowercased haystack per
+ * listing, once at load, turns each keystroke into a single scan instead of four
+ * coercions plus a four-element array allocated per listing per keystroke.
+ *
+ * '\n' cannot occur in the needle — a single-line input strips it — so joining
+ * on it cannot let a query span the gap between two fields. */
+const SEARCH_FIELDS = ['displayName', 'description', 'sourceUrl', 'identityKey'];
+
+function buildSearchIndex(rows) {
+  for (const e of rows) {
+    e.haystack = SEARCH_FIELDS.map((f) => String(e[f] ?? '')).join('\n').toLowerCase();
+  }
 }
 
-function matchTier(e, tier) {
-  if (!tier) return true;
-  if (tier === 'whale') return e.amountCents >= 100000;
-  if (tier === 'high') return e.amountCents >= 25000 && e.amountCents < 100000;
-  if (tier === 'mid') return e.amountCents >= 5000 && e.amountCents < 25000;
-  if (tier === 'low') return e.amountCents < 5000;
-  return true;
+const matches = (e, needle) => e.haystack.includes(needle);
+
+/* Spend tiers are one ladder, written out once here. The filter test and the summary
+ * tiles both read it, so the filter and the numbers it is derived from cannot
+ * drift apart. */
+const TIERS = [['whale', 100000], ['high', 25000], ['mid', 5000], ['low', 0]];
+
+function tierOf(e) {
+  const cents = e.amountCents;
+  for (let i = 0; i < TIERS.length - 1; i++) {
+    if (cents >= TIERS[i][1]) return TIERS[i][0];
+  }
+  return TIERS[TIERS.length - 1][0];
 }
 
-function matchPlatform(e, platform) {
-  if (!platform) return true;
-  return e.identityType === platform;
+/* Every number the panel shows comes off one walk of the filtered slice: category
+ * totals, tier totals, and the grand total the tier shares divide by. Three
+ * separate passes meant three allocations and three re-reads of the same array. */
+function aggregate(rows) {
+  const byCat = new Map();
+  const tiers = new Map(TIERS.map(([t]) => [t, { n: 0, cents: 0 }]));
+  let grand = 0;
+  for (const e of rows) {
+    const cents = e.amountCents;
+    grand += cents;
+    byCat.set(e.categorySlug, (byCat.get(e.categorySlug) || 0) + cents);
+    const bucket = tiers.get(tierOf(e));
+    bucket.n += 1;
+    bucket.cents += cents;
+  }
+  return { grand, byCat, tiers };
 }
 
 /* Category spend panel. One series, so every bar wears the same hue — coloring
  * bars darker-where-bigger would double-encode length as color and burn the one
  * free channel on information the bar already shows. Bars scale to the largest
  * category in the slice, so the panel is self-normalising under any filter. */
-function renderCats(rows) {
-  const totals = new Map();
-  for (const e of rows) {
-    const t = totals.get(e.categorySlug) || { cents: 0, n: 0 };
-    t.cents += e.amountCents;
-    t.n += 1;
-    totals.set(e.categorySlug, t);
-  }
-  const list = [...totals].sort((a, b) => b[1].cents - a[1].cents);
-  const max = list.length ? list[0][1].cents : 0;
+function renderCats({ byCat, grand }) {
+  const list = [...byCat].sort((a, b) => b[1] - a[1]);
+  const max = list.length ? list[0][1] : 0;
 
   el('cat-rows').innerHTML = list
-    .map(([slug, t]) => {
+    .map(([slug, cents]) => {
       const name = catName.get(slug) || slug;
       return `<tr>
         <td class="cat-name">${esc(name)}</td>
-        <td class="cat-bar-col"><span class="cat-bar" style="width:${(t.cents / max) * 100}%"></span></td>
-        <td class="num">${usd.format(t.cents / 100)}</td>
+        <td class="cat-bar-col"><span class="cat-bar" style="width:${(cents / max) * 100}%"></span></td>
+        <td class="num">${usd.format(cents / 100)}</td>
       </tr>`;
     })
     .join('');
 
-  const grand = rows.reduce((s, e) => s + e.amountCents, 0);
   el('panel-note').textContent = `${list.length} categor${list.length === 1 ? 'y' : 'ies'} · ${usd.format(grand / 100)} in this view`;
 }
 
-function renderTierSummary(rows) {
-  const counts = { whale: 0, high: 0, mid: 0, low: 0 };
-  const sums = { whale: 0, high: 0, mid: 0, low: 0 };
-  for (const e of rows) {
-    let t = 'low';
-    if (e.amountCents >= 100000) t = 'whale';
-    else if (e.amountCents >= 25000) t = 'high';
-    else if (e.amountCents >= 5000) t = 'mid';
-    counts[t] += 1;
-    sums[t] += e.amountCents;
-  }
-  const grand = rows.reduce((s, e) => s + e.amountCents, 0) || 1;
-  for (const t of ['whale', 'high', 'mid', 'low']) {
+function renderTierSummary({ tiers, grand }) {
+  // grand is 0 when nothing matches; the fallback keeps the share off NaN.
+  const denom = grand || 1;
+  for (const [t, v] of TIERS) {
     const valEl = el(`tier-val-${t}`);
     const metaEl = el(`tier-meta-${t}`);
-    if (valEl) valEl.textContent = usd.format(sums[t] / 100);
-    if (metaEl) {
-      const pct = ((sums[t] / grand) * 100).toFixed(1);
-      metaEl.textContent = `${num.format(counts[t])} listings · ${pct}%`;
-    }
+    if (valEl) valEl.textContent = usd.format(v.cents / 100);
+    if (metaEl) metaEl.textContent = `${num.format(v.n)} listings · ${((v.cents / denom) * 100).toFixed(1)}%`;
   }
 }
 
@@ -336,31 +354,27 @@ function render() {
   const sorter = SORTS[el('sort').value] || bySpend;
 
   // Rank reflects position on the board being viewed (all-time, or one category),
-  // so it stays stable while the search box narrows the rows.
-  const board = (cat ? entries.filter((e) => e.categorySlug === cat) : entries)
-    .slice()
-    .sort(bySpend);
-  rankOf = new Map(board.map((e, i) => [e.id, i + 1]));
+  // so it stays stable while the search box narrows the rows. Both boards were
+  // already built by computeRanks() at load; rebuilding them per keystroke was
+  // re-deriving a value no search term can change.
+  rankOf = cat ? categoryRankOf : overallRankOf;
+  const board = cat ? categoryBoard(cat) : entries;
 
-  shown = board
-    .filter((e) => {
-      if (needle && !matches(e, needle)) return false;
-      if (!matchTier(e, tier)) return false;
-      if (!matchPlatform(e, platform)) return false;
-      return true;
-    })
-    .slice()
-    .sort(sorter);
+  shown = board.filter((e) =>
+    (!needle || matches(e, needle)) &&
+    (!tier || tierOf(e) === tier) &&
+    (!platform || e.identityType === platform));
+  shown.sort(sorter);
 
   el('rows').innerHTML = shown.map((e) => row(e, rankOf.get(e.id))).join('');
 
-  const spend = shown.reduce((sum, e) => sum + e.amountCents, 0);
+  const agg = aggregate(shown);
   el('result-count').textContent =
-    `${num.format(shown.length)} of ${num.format(entries.length)} listings · ${usd.format(spend / 100)} paid`;
+    `${num.format(shown.length)} of ${num.format(entries.length)} listings · ${usd.format(agg.grand / 100)} paid`;
   el('empty').hidden = shown.length > 0;
 
-  renderCats(shown);
-  renderTierSummary(shown);
+  renderCats(agg);
+  renderTierSummary(agg);
   writeState();
 }
 
@@ -425,6 +439,7 @@ function init() {
     categories = categoriesJson;
     catName = new Map(categories.map((x) => [x.slug, x.name]));
 
+    buildSearchIndex(entries);
     computeRanks();
     stats();
     populateCategories();
