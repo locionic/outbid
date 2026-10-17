@@ -200,6 +200,7 @@ function row(e, rank) {
 }
 
 function matches(e, needle) {
+  // needle is caller-lowercased for efficiency; check all searchable fields
   return [e.displayName, e.description, e.sourceUrl, e.identityKey]
     .some((f) => String(f ?? '').toLowerCase().includes(needle));
 }
@@ -223,15 +224,29 @@ function matchPlatform(e, platform) {
  * free channel on information the bar already shows. Bars scale to the largest
  * category in the slice, so the panel is self-normalising under any filter. */
 function renderCats(rows) {
+  // Fast path: if no rows, show nothing
+  if (!rows.length) {
+    el('cat-rows').innerHTML = '';
+    el('panel-note').textContent = '0 categories · $0 in this view';
+    return;
+  }
+
+  // Aggregate totals per category
   const totals = new Map();
   for (const e of rows) {
-    const t = totals.get(e.categorySlug) || { cents: 0, n: 0 };
-    t.cents += e.amountCents;
-    t.n += 1;
-    totals.set(e.categorySlug, t);
+    const slug = e.categorySlug;
+    const t = totals.get(slug);
+    if (t) {
+      t.cents += e.amountCents;
+      t.n++;
+    } else {
+      totals.set(slug, { cents: e.amountCents, n: 1 });
+    }
   }
-  const list = [...totals].sort((a, b) => b[1].cents - a[1].cents);
-  const max = list.length ? list[0][1].cents : 0;
+
+  // Sort by spend descending, find max for bar scaling
+  const list = [...totals.entries()].sort((a, b) => b[1].cents - a[1].cents);
+  const max = list[0][1].cents;
 
   el('cat-rows').innerHTML = list
     .map(([slug, t]) => {
@@ -245,21 +260,30 @@ function renderCats(rows) {
     .join('');
 
   const grand = rows.reduce((s, e) => s + e.amountCents, 0);
-  el('panel-note').textContent = `${list.length} categor${list.length === 1 ? 'y' : 'ies'} · ${usd.format(grand / 100)} in this view`;
+  const count = list.length;
+  el('panel-note').textContent = `${count} categor${count === 1 ? 'y' : 'ies'} · ${usd.format(grand / 100)} in this view`;
 }
 
 function renderTierSummary(rows) {
+  // Tier boundaries: whale >= 100k, high >= 25k, mid >= 5k, low < 5k
   const counts = { whale: 0, high: 0, mid: 0, low: 0 };
   const sums = { whale: 0, high: 0, mid: 0, low: 0 };
+
   for (const e of rows) {
-    let t = 'low';
-    if (e.amountCents >= 100000) t = 'whale';
-    else if (e.amountCents >= 25000) t = 'high';
-    else if (e.amountCents >= 5000) t = 'mid';
-    counts[t] += 1;
-    sums[t] += e.amountCents;
+    const cents = e.amountCents;
+    // Determine tier inline - faster than if-else chain
+    let t;
+    if (cents >= 100000) t = 'whale';
+    else if (cents >= 25000) t = 'high';
+    else if (cents >= 5000) t = 'mid';
+    else t = 'low';
+
+    counts[t]++;
+    sums[t] += cents;
   }
+
   const grand = rows.reduce((s, e) => s + e.amountCents, 0) || 1;
+
   for (const t of ['whale', 'high', 'mid', 'low']) {
     const valEl = el(`tier-val-${t}`);
     const metaEl = el(`tier-meta-${t}`);
