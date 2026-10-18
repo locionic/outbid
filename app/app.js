@@ -204,13 +204,23 @@ function matches(e, needle) {
     .some((f) => String(f ?? '').toLowerCase().includes(needle));
 }
 
+const TIER_THRESHOLDS = {
+  low: 5000,
+  mid: 25000,
+  high: 100000,
+  whale: Infinity,
+};
+
 function matchTier(e, tier) {
   if (!tier) return true;
-  if (tier === 'whale') return e.amountCents >= 100000;
-  if (tier === 'high') return e.amountCents >= 25000 && e.amountCents < 100000;
-  if (tier === 'mid') return e.amountCents >= 5000 && e.amountCents < 25000;
-  if (tier === 'low') return e.amountCents < 5000;
-  return true;
+  return e.amountCents >= TIER_THRESHOLDS[tier];
+}
+
+function getTier(e) {
+  if (e.amountCents >= TIER_THRESHOLDS.whale) return 'whale';
+  if (e.amountCents >= TIER_THRESHOLDS.high) return 'high';
+  if (e.amountCents >= TIER_THRESHOLDS.mid) return 'mid';
+  return 'low';
 }
 
 function matchPlatform(e, platform) {
