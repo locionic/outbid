@@ -204,13 +204,23 @@ function matches(e, needle) {
     .some((f) => String(f ?? '').toLowerCase().includes(needle));
 }
 
+const TIER_THRESHOLDS = {
+  low: 5000,
+  mid: 25000,
+  high: 100000,
+  whale: Infinity,
+};
+
 function matchTier(e, tier) {
   if (!tier) return true;
-  if (tier === 'whale') return e.amountCents >= 100000;
-  if (tier === 'high') return e.amountCents >= 25000 && e.amountCents < 100000;
-  if (tier === 'mid') return e.amountCents >= 5000 && e.amountCents < 25000;
-  if (tier === 'low') return e.amountCents < 5000;
-  return true;
+  return e.amountCents >= TIER_THRESHOLDS[tier];
+}
+
+function getTier(e) {
+  if (e.amountCents >= TIER_THRESHOLDS.whale) return 'whale';
+  if (e.amountCents >= TIER_THRESHOLDS.high) return 'high';
+  if (e.amountCents >= TIER_THRESHOLDS.mid) return 'mid';
+  return 'low';
 }
 
 function matchPlatform(e, platform) {
@@ -252,13 +262,24 @@ function renderTierSummary(rows) {
   const counts = { whale: 0, high: 0, mid: 0, low: 0 };
   const sums = { whale: 0, high: 0, mid: 0, low: 0 };
   for (const e of rows) {
-    let t = 'low';
-    if (e.amountCents >= 100000) t = 'whale';
-    else if (e.amountCents >= 25000) t = 'high';
-    else if (e.amountCents >= 5000) t = 'mid';
+    const t = getTier(e);
     counts[t] += 1;
     sums[t] += e.amountCents;
   }
+  const grand = rows.reduce((s, e) => s + e.amountCents, 0) || 1;
+  for (const t of ['whale', 'high', 'mid', 'low']) {
+    const valEl = el(`tier-val-${t}`);
+    const metaEl = el(`tier-meta-${t}`);
+    if (valEl) valEl.textContent = usd.format(sums[t] / 100);
+    if (metaEl) {
+      const pct = ((sums[t] / grand) * 100).toFixed(1);
+      metaEl.textContent = `${num.format(counts[t])} listings · ${pct}%`;
+    }
+  }
+}
+
+// Helper for render() that uses pre-computed tier stats (avoids double iteration)
+function renderTierSummaryWithPrecomputed(rows, counts, sums) {
   const grand = rows.reduce((s, e) => s + e.amountCents, 0) || 1;
   for (const t of ['whale', 'high', 'mid', 'low']) {
     const valEl = el(`tier-val-${t}`);
@@ -342,11 +363,19 @@ function render() {
     .sort(bySpend);
   rankOf = new Map(board.map((e, i) => [e.id, i + 1]));
 
+  // Filter once, computing tier classification inline to avoid duplicate passes
+  const counts = { whale: 0, high: 0, mid: 0, low: 0 };
+  const sums = { whale: 0, high: 0, mid: 0, low: 0 };
+
   shown = board
     .filter((e) => {
       if (needle && !matches(e, needle)) return false;
       if (!matchTier(e, tier)) return false;
       if (!matchPlatform(e, platform)) return false;
+      // Compute tier summary during filter pass
+      const t = getTier(e);
+      counts[t] += 1;
+      sums[t] += e.amountCents;
       return true;
     })
     .slice()
@@ -360,7 +389,7 @@ function render() {
   el('empty').hidden = shown.length > 0;
 
   renderCats(shown);
-  renderTierSummary(shown);
+  renderTierSummaryWithPrecomputed(shown, counts, sums);
   writeState();
 }
 
